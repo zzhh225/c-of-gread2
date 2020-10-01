@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
-#define InitialValue 10
+using namespace std;
+#define InitialValue 100
+#define InitNumber 10
 struct NodeLinkedList{
     double coefficient;
     int exponent;
@@ -11,54 +13,163 @@ struct NodeLinkedList{
 class Polynomial{
 public:
     Polynomial();
-    void CreatePolynomialA(const int *exponent,const double *coefficient,int n);
+    Polynomial(int);
+    void inputNumber();
+    void sortArray(int *a, double *b, int n);
+    void CreatePolynomial(const int *exponent, const double *coefficient, int number,int i);
     void polynomialAddtion();
+    void sortPolynomial();
     void OutputToFile();
     void Output();
+
 private:
-    NodeLinkedList *PolynomialA;
-    NodeLinkedList *PolynomialB;
+    int getLength(int n);
+    NodeLinkedList *headPolynomial[InitNumber],*resultHeadPolynomial;
+    int numberOfPolynomials;
 };
 
-Polynomial::Polynomial() {
-    PolynomialA = (NodeLinkedList*)malloc(sizeof(NodeLinkedList));
-    PolynomialB = (NodeLinkedList*)malloc(sizeof(NodeLinkedList));
+Polynomial::Polynomial() {}
+
+Polynomial::Polynomial(int n) {
+    numberOfPolynomials = n;
+    for(int i = 0; i < n; i++){
+        headPolynomial[i] = (NodeLinkedList *)malloc(sizeof(NodeLinkedList));
+        headPolynomial[i]->next = NULL;
+    }
 }
 
-void Polynomial::CreatePolynomialA(const int *exponent,const double *coefficient,int number) {
+void Polynomial::inputNumber(){
+    int Number;
+    int *Exponent[numberOfPolynomials];
+    double *Coefficient[numberOfPolynomials];
+    for (int i = 0; i < numberOfPolynomials; i++) {
+        Exponent[i] = (int *) malloc(InitialValue * sizeof(int));
+        Coefficient[i] = (double *) malloc(InitialValue * sizeof(double));
+    }
+    for(int i = 0; i < numberOfPolynomials; i++) {
+        cout<<"ÊäÈë¸Ã¶àÏîÊ½ÏîÊý";
+        cin >> Number;
+        for (int j = 0; j < Number; j++) {
+            cout<<"ÊäÈëµÚ"<<j+1<<"ÏîµÄÏµÊý";
+            cin >> Coefficient[i][j];
+            cout<<"ÊäÈëµÚ"<<j+1<<"ÏîµÄ´ÎÊý";
+            cin >> Exponent[i][j];
+        }
+        this->sortArray(Exponent[i], Coefficient[i], Number);
+        this->CreatePolynomial(Exponent[i], Coefficient[i], Number, i);
+    }
+}
+
+//¹¹½¨¶àÏîÊ½
+void Polynomial::CreatePolynomial(const int exponent[], const double coefficient[], int number, int n) {
     for(int i = number - 1; i >= 0; i--){
         NodeLinkedList *NewNode;
         NewNode = (NodeLinkedList*)malloc(sizeof(NodeLinkedList));
         NewNode->exponent = exponent[i];
         NewNode->coefficient = coefficient[i];
-        NewNode->next = PolynomialA->next;
-        PolynomialA = NewNode;
+        NewNode->next = headPolynomial[n]->next;
+        headPolynomial[n]->next = NewNode;
     }
 }
-//todo å¤šé¡¹å¼åŠ å‡
-void Polynomial::polynomialAddtion() {
-
+//»ñÈ¡³¤¶È
+int Polynomial::getLength(int n) {
+    NodeLinkedList *p;
+    int k;
+    p = headPolynomial[n]->next;
+    while(p->next){
+        k++;
+        p = p->next;
+    }
+    return k;
 }
-//todo è¾“å‡ºåˆ°æ–‡ä»¶
+//¶Ô¶àÏîÊ½ÅÅÐò
+void Polynomial::sortPolynomial() {
+//    NodeLinkedList *Node1,*Node2;
+//    int number1,number2;
+//    number2 = numberOfPolynomials;
+//    while(number2--){
+//        number1 = getLength(number2);
+//        Node1 = headPolynomial[number2];
+//        for(int i = 1; i < number1; i++){
+//            for(int j = 1; j < number1 - i; j++){
+//                if(Node1->next->exponent < Node1->next->next->exponent){
+//                    Node2 = Node1->next;
+//                    Node1->next = Node1->next->next;
+//                    Node1->next = Node2;
+//                }
+//                Node1 = Node1->next;
+//            }
+//        }
+//    }
+//    free(Node1);
+//    free(Node2);
+}
+
+//todo ¶àÏîÊ½¼Ó¼õ
+void Polynomial::polynomialAddtion() {
+    NodeLinkedList *Node1,*Node2,*Node3;
+    Node1 = headPolynomial[0]->next;
+    Node2 = headPolynomial[1]->next;
+    Node3 = headPolynomial[0];
+    while(Node1 && Node2){
+        if(Node1->exponent < Node2->exponent){
+            Node3->next = Node1;
+            Node3 = Node1;
+            Node1 = Node1->next;
+        }
+        else if(Node1->exponent == Node2->exponent){
+            Node1->coefficient += Node2->coefficient;
+            Node3->next = Node1;
+            Node3 = Node1;
+            Node1 = Node1->next;
+            Node2 = Node2->next;
+        }
+        else{
+            Node3->next = Node2;
+            Node3 = Node2;
+            Node2 = Node2->next;
+        }
+    }
+    Node3->next = Node1 ? Node1:Node2;
+    free(Node2);
+}
+//todo Êä³öµ½ÎÄ¼þ
 void Polynomial::OutputToFile() {
 
 }
-//todo è¾“å‡º
+//todo Êä³ö
 void Polynomial::Output() {
+    NodeLinkedList *p;
+    p = headPolynomial[0]->next;
+    while(p)
+    {
+        cout<<p->exponent<<endl;
+        p=p->next;
+    }
+}
 
+void Polynomial::sortArray(int *a,double *b,int n){
+    for(int i = 0; i < n - 1; i++){
+        for(int j = 0;j < n- i - 1; j++){
+            if(*(a+j)<*(a+j+1)){
+                int temp1 = *(a+j);
+                *(a+j) = *(a+j+1);
+                *(a+j+1) = temp1;
+                double temp2 = *(b+j);
+                *(b+j) = *(b+j+1);
+                *(b+j+1) = temp2;
+            }
+        }
+    }
 }
 
 int main() {
-    int n = 2,Number;
-    int *Exponent[n];
-    double *Coefficient[n];
-    for (int i = 0; i < n; i++) {
-        Exponent[i] = (int *) malloc(InitialValue * sizeof(int));
-        Coefficient[i] = (double *) malloc(InitialValue * sizeof(double));
-    }
-    Polynomial Polynomial;
-    Polynomial.CreatePolynomialA(Exponent[0], Coefficient[0],Number);
+    int n = 2;
+    Polynomial Polynomial(n);
+    Polynomial.inputNumber();
+//    Polynomial.sortPolynomial();
     Polynomial.polynomialAddtion();
     Polynomial.Output();
     Polynomial.OutputToFile();
+    return 0;
 }

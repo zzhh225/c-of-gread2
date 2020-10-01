@@ -1,4 +1,4 @@
-ToolSet: w64 6.0 (local)@C:\Program Files\mingw64
+ToolSet: w64 8.0 (local)@F:\msys2\mingw64
 Options: 
 
 Options:

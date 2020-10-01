@@ -16,7 +16,7 @@ typedef struct Node
 void InitList_L(LinkList &L)
 {
     L = (LinkList)malloc(sizeof(Node));
-    //L->next = NULL;
+    L->next = NULL;
 };
 
 //创建非空表

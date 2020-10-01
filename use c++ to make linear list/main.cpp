@@ -17,12 +17,12 @@ class StudentTableData{
 public:
     StudentTableData();
     void CreatStudentTableData(StudentData dataPublic[],int lengthPublic);
-    void OutputLength(); //è¾“å‡ºé•¿åº¦
-    void OutputData(); //è¾“å‡ºæ‰€æœ‰æ•°æ®
-    void SearchData(int s); //é€šè¿‡IDæŸ¥æ‰¾æ•°æ®
-    void SearchData(const string& s); //é€šè¿‡nameæŸ¥æ‰¾æ•°æ®
-    void InsertToList(StudentData AddData, int index); //å¢åŠ æ•°æ®
-    void DeleteFromList(int index);//åˆ é™¤æ•°æ®
+    void OutputLength(); //Êä³ö³¤¶È
+    void OutputData(); //Êä³öËùÓĞÊı¾İ
+    void SearchData(int s); //Í¨¹ıID²éÕÒÊı¾İ
+    void SearchData(const string& s); //Í¨¹ıname²éÕÒÊı¾İ
+    void InsertToList(StudentData AddData, int index); //Ôö¼ÓÊı¾İ
+    void DeleteFromList(int index);//É¾³ıÊı¾İ
     StudentData *datatest;
 private:
     int lengthPrivate;
@@ -105,7 +105,7 @@ void StudentTableData::SearchData(int s) {
             return;
         }
     }
-    cout<<"æœªæ‰¾åˆ°";
+    cout<<"Î´ÕÒµ½";
 }
 void StudentTableData::SearchData(const string& s) {
 //    for(int i=0; i<lengthPrivate; i++){
@@ -204,7 +204,6 @@ int main() {
                 data.OutputData();
                 break;
             case 2:
-
                 cout<<"input the name of student you wanna find:";
                 cin>>search_name;
                 data.SearchData(search_name);

@@ -1,4 +1,4 @@
-# Install script for directory: F:/study/data structure/program/test
+# Install script for directory: F:/study/data structure/Programs/Linked list makes linear list
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "F:/study/data structure/program/test/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "F:/study/data structure/Programs/Linked list makes linear list/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

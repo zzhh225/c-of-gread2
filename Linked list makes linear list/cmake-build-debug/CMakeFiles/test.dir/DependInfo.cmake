@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "F:/study/data structure/program/test/main.cpp" "F:/study/data structure/program/test/cmake-build-debug/CMakeFiles/test.dir/main.cpp.obj"
+  "F:/study/data structure/Programs/Linked list makes linear list/main.cpp" "F:/study/data structure/Programs/Linked list makes linear list/cmake-build-debug/CMakeFiles/test.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

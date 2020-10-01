@@ -1,4 +1,4 @@
-# Install script for directory: F:/study/data structure/program/Polynomial Computation
+# Install script for directory: F:/study/data structure/Programs/Polynomial Computation
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "F:/study/data structure/program/Polynomial Computation/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "F:/study/data structure/Programs/Polynomial Computation/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
