@@ -19,12 +19,10 @@ public:
     void CreatePolynomial(const int *exponent, const double *coefficient, int number,int i);
     void polynomialAddtion();
     void combineExponent();
-    void sortPolynomial();
     void OutputToFile();
     void Output();
 
 private:
-    int getLength(int n);
     void deleteNode(int);
     NodeLinkedList *headPolynomial[InitNumber],*resultHeadPolynomial;
     int numberOfPolynomials;
@@ -73,17 +71,6 @@ void Polynomial::CreatePolynomial(const int exponent[], const double coefficient
         headPolynomial[n]->next = NewNode;
     }
 }
-//获取长度
-int Polynomial::getLength(int n) {
-    NodeLinkedList *p;
-    int k = 0;
-    p = headPolynomial[n];
-    while(p->next){
-        k++;
-        p = p->next;
-    }
-    return k;
-}
 
 void Polynomial::deleteNode(int n) {
     NodeLinkedList *p,*q;
@@ -95,29 +82,6 @@ void Polynomial::deleteNode(int n) {
     }
     q = p->next;
     p->next = q->next;
-}
-
-//对多项式排序
-void Polynomial::sortPolynomial() {
-//    NodeLinkedList *Node1,*Node2;
-//    int number1,number2;
-//    number2 = numberOfPolynomials;
-//    while(number2--){
-//        number1 = getLength(number2);
-//        Node1 = headPolynomial[number2];
-//        for(int i = 1; i < number1; i++){
-//            for(int j = 1; j < number1 - i; j++){
-//                if(Node1->next->exponent < Node1->next->next->exponent){
-//                    Node2 = Node1->next;
-//                    Node1->next = Node1->next->next;
-//                    Node1->next = Node2;
-//                }
-//                Node1 = Node1->next;
-//            }
-//        }
-//    }
-//    free(Node1);
-//    free(Node2);
 }
 
 //todo 多项式加减
@@ -191,7 +155,6 @@ int main() {
     int n = 2;
     Polynomial Polynomial(n);
     Polynomial.inputNumber();
-//    Polynomial.sortPolynomial();
     Polynomial.polynomialAddtion();
     Polynomial.combineExponent();
     Polynomial.Output();
