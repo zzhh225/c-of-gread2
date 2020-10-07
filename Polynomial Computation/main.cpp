@@ -15,15 +15,17 @@ public:
     Polynomial();
     Polynomial(int);
     void inputNumber();
-    void sortArray(int *a, double *b, int n);
+    void sortArray(int *, double *, int n);
     void CreatePolynomial(const int *exponent, const double *coefficient, int number,int i);
     void polynomialAddtion();
+    void combineExponent();
     void sortPolynomial();
     void OutputToFile();
     void Output();
 
 private:
     int getLength(int n);
+    void deleteNode(int);
     NodeLinkedList *headPolynomial[InitNumber],*resultHeadPolynomial;
     int numberOfPolynomials;
 };
@@ -74,14 +76,27 @@ void Polynomial::CreatePolynomial(const int exponent[], const double coefficient
 //获取长度
 int Polynomial::getLength(int n) {
     NodeLinkedList *p;
-    int k;
-    p = headPolynomial[n]->next;
+    int k = 0;
+    p = headPolynomial[n];
     while(p->next){
         k++;
         p = p->next;
     }
     return k;
 }
+
+void Polynomial::deleteNode(int n) {
+    NodeLinkedList *p,*q;
+    p = headPolynomial[0]->next;
+    int j = 1;
+    while(p && j < n - 1){
+        p = p->next;
+        j++;
+    }
+    q = p->next;
+    p->next = q->next;
+}
+
 //对多项式排序
 void Polynomial::sortPolynomial() {
 //    NodeLinkedList *Node1,*Node2;
@@ -112,17 +127,10 @@ void Polynomial::polynomialAddtion() {
     Node2 = headPolynomial[1]->next;
     Node3 = headPolynomial[0];
     while(Node1 && Node2){
-        if(Node1->exponent < Node2->exponent){
+        if(Node1->exponent >= Node2->exponent){
             Node3->next = Node1;
             Node3 = Node1;
             Node1 = Node1->next;
-        }
-        else if(Node1->exponent == Node2->exponent){
-            Node1->coefficient += Node2->coefficient;
-            Node3->next = Node1;
-            Node3 = Node1;
-            Node1 = Node1->next;
-            Node2 = Node2->next;
         }
         else{
             Node3->next = Node2;
@@ -131,7 +139,23 @@ void Polynomial::polynomialAddtion() {
         }
     }
     Node3->next = Node1 ? Node1:Node2;
-    free(Node2);
+}
+
+void Polynomial::combineExponent(){
+    NodeLinkedList *Node;
+    int j=1;
+    Node = headPolynomial[0]->next;
+    while(Node && Node->next){
+        if(Node->exponent == Node->next->exponent){
+            Node->coefficient += Node->next->coefficient;
+            deleteNode(j+1);
+        }
+        else{
+            j++;
+            Node = Node->next;
+        };
+
+    }
 }
 //todo 输出到文件
 void Polynomial::OutputToFile() {
@@ -143,7 +167,7 @@ void Polynomial::Output() {
     p = headPolynomial[0]->next;
     while(p)
     {
-        cout<<p->exponent<<endl;
+        cout<<p->coefficient<<"X"<<p->exponent<<endl;
         p=p->next;
     }
 }
@@ -169,6 +193,7 @@ int main() {
     Polynomial.inputNumber();
 //    Polynomial.sortPolynomial();
     Polynomial.polynomialAddtion();
+    Polynomial.combineExponent();
     Polynomial.Output();
     Polynomial.OutputToFile();
     return 0;
