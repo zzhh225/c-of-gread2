@@ -1,3 +1,0 @@
-F:/study/data structure/Programs/Linked list makes linear list/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-F:/study/data structure/Programs/Linked list makes linear list/cmake-build-debug/CMakeFiles/test.dir
-F:/study/data structure/Programs/Linked list makes linear list/cmake-build-debug/CMakeFiles/edit_cache.dir

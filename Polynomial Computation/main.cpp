@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <windows.h>
 #include <fstream>
 using namespace std;
 #define InitialValue 100
@@ -84,7 +85,7 @@ void Polynomial::deleteNode(int n) {
     p->next = q->next;
 }
 
-//todo 多项式加减
+// 多项式加减
 void Polynomial::polynomialAddtion() {
     NodeLinkedList *Node1,*Node2,*Node3;
     Node1 = headPolynomial[0]->next;
@@ -104,7 +105,7 @@ void Polynomial::polynomialAddtion() {
     }
     Node3->next = Node1 ? Node1:Node2;
 }
-
+// 整合同次数项
 void Polynomial::combineExponent(){
     NodeLinkedList *Node;
     int j=1;
@@ -121,21 +122,38 @@ void Polynomial::combineExponent(){
 
     }
 }
-//todo 输出到文件
+// 输出到文件
 void Polynomial::OutputToFile() {
-
+    fstream out("result.txt",ios::out|ios::in);
+    NodeLinkedList *p;
+    p = headPolynomial[0]->next;
+    while(p)
+    {
+        if(!p->next){
+            out<<p->coefficient<<"X^"<<p->exponent;
+        }
+        else{
+            out << p->coefficient << "X^" << p->exponent << "+";
+        }
+        p=p->next;
+    }
 }
-//todo 输出
+//输出到终端
 void Polynomial::Output() {
     NodeLinkedList *p;
     p = headPolynomial[0]->next;
     while(p)
     {
-        cout<<p->coefficient<<"X"<<p->exponent<<endl;
+        if(!p->next){
+            cout<<p->coefficient<<"X^"<<p->exponent;
+        }
+        else{
+            cout << p->coefficient << "X^" << p->exponent << "+";
+        }
         p=p->next;
     }
 }
-
+//对输入的数组排序
 void Polynomial::sortArray(int *a,double *b,int n){
     for(int i = 0; i < n - 1; i++){
         for(int j = 0;j < n- i - 1; j++){

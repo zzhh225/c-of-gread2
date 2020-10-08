@@ -1,3 +1,0 @@
-F:/study/data structure/Programs/Polynomial Computation/cmake-build-debug/CMakeFiles/Polynomial_Computation.dir
-F:/study/data structure/Programs/Polynomial Computation/cmake-build-debug/CMakeFiles/edit_cache.dir
-F:/study/data structure/Programs/Polynomial Computation/cmake-build-debug/CMakeFiles/rebuild_cache.dir

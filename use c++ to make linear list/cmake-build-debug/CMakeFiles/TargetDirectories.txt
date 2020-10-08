@@ -1,3 +1,0 @@
-F:/study/data structure/Programs/use c++ to make linear list/cmake-build-debug/CMakeFiles/edit_cache.dir
-F:/study/data structure/Programs/use c++ to make linear list/cmake-build-debug/CMakeFiles/untitled.dir
-F:/study/data structure/Programs/use c++ to make linear list/cmake-build-debug/CMakeFiles/rebuild_cache.dir
