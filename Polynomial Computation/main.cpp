@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdlib>
-#include <windows.h>
 #include <fstream>
 using namespace std;
 #define InitialValue 100
@@ -33,12 +32,14 @@ Polynomial::Polynomial() {}
 
 Polynomial::Polynomial(int n) {
     numberOfPolynomials = n;
+    resultHeadPolynomial = (NodeLinkedList *)malloc(sizeof(NodeLinkedList));
+    resultHeadPolynomial->next = NULL;
     for(int i = 0; i < n; i++){
         headPolynomial[i] = (NodeLinkedList *)malloc(sizeof(NodeLinkedList));
         headPolynomial[i]->next = NULL;
     }
 }
-
+//the module of inputing
 void Polynomial::inputNumber(){
     int Number;
     int *Exponent[numberOfPolynomials];
@@ -48,12 +49,12 @@ void Polynomial::inputNumber(){
         Coefficient[i] = (double *) malloc(InitialValue * sizeof(double));
     }
     for(int i = 0; i < numberOfPolynomials; i++) {
-        cout<<"输入该多项式项数";
+        cout<<"input the number of terms of this polynomial";
         cin >> Number;
         for (int j = 0; j < Number; j++) {
-            cout<<"输入第"<<j+1<<"项的系数";
+            cout<<"input the no."<<j+1<<" coefficient";
             cin >> Coefficient[i][j];
-            cout<<"输入第"<<j+1<<"项的次数";
+            cout<<"input the no."<<j+1<<" exponent";
             cin >> Exponent[i][j];
         }
         this->sortArray(Exponent[i], Coefficient[i], Number);
@@ -61,7 +62,7 @@ void Polynomial::inputNumber(){
     }
 }
 
-//构建多项式
+//creat the linked list to storage the polynomial
 void Polynomial::CreatePolynomial(const int exponent[], const double coefficient[], int number, int n) {
     for(int i = number - 1; i >= 0; i--){
         NodeLinkedList *NewNode;
@@ -72,7 +73,7 @@ void Polynomial::CreatePolynomial(const int exponent[], const double coefficient
         headPolynomial[n]->next = NewNode;
     }
 }
-
+//basic operation about deleting node 
 void Polynomial::deleteNode(int n) {
     NodeLinkedList *p,*q;
     p = headPolynomial[0]->next;
@@ -85,12 +86,12 @@ void Polynomial::deleteNode(int n) {
     p->next = q->next;
 }
 
-// 多项式加减
+// part one of polynomial add: merge linked list
 void Polynomial::polynomialAddtion() {
     NodeLinkedList *Node1,*Node2,*Node3;
     Node1 = headPolynomial[0]->next;
     Node2 = headPolynomial[1]->next;
-    Node3 = headPolynomial[0];
+    Node3 = resultHeadPolynomial;
     while(Node1 && Node2){
         if(Node1->exponent >= Node2->exponent){
             Node3->next = Node1;
@@ -105,11 +106,11 @@ void Polynomial::polynomialAddtion() {
     }
     Node3->next = Node1 ? Node1:Node2;
 }
-// 整合同次数项
+// part two of polynomial add: combine the same exponent
 void Polynomial::combineExponent(){
     NodeLinkedList *Node;
     int j=1;
-    Node = headPolynomial[0]->next;
+    Node = resultHeadPolynomial->next;
     while(Node && Node->next){
         if(Node->exponent == Node->next->exponent){
             Node->coefficient += Node->next->coefficient;
@@ -119,14 +120,13 @@ void Polynomial::combineExponent(){
             j++;
             Node = Node->next;
         };
-
     }
 }
-// 输出到文件
+// output the result to a txt
 void Polynomial::OutputToFile() {
     fstream out("result.txt",ios::out|ios::in);
     NodeLinkedList *p;
-    p = headPolynomial[0]->next;
+    p = resultHeadPolynomial->next;
     while(p)
     {
         if(!p->next){
@@ -138,10 +138,10 @@ void Polynomial::OutputToFile() {
         p=p->next;
     }
 }
-//输出到终端
+//output result to terminal
 void Polynomial::Output() {
     NodeLinkedList *p;
-    p = headPolynomial[0]->next;
+    p = resultHeadPolynomial->next;
     while(p)
     {
         if(!p->next){
@@ -152,8 +152,9 @@ void Polynomial::Output() {
         }
         p=p->next;
     }
+    cout<<endl;
 }
-//对输入的数组排序
+//sort coefficient and exponent before storaging them in linked list
 void Polynomial::sortArray(int *a,double *b,int n){
     for(int i = 0; i < n - 1; i++){
         for(int j = 0;j < n- i - 1; j++){
