@@ -15,15 +15,15 @@ public:
     Polynomial();
     Polynomial(int);
     void inputNumber();
-    void sortArray(int *, double *, int n);
-    void CreatePolynomial(const int *exponent, const double *coefficient, int number,int i);
-    void polynomialAddtion();
-    void combineExponent();
+    void sortArray(int *, double *, int );
+    void CreatePolynomial(const int *, const double *, int ,int );
+    void add();
     void OutputToFile();
     void Output();
-
 private:
     void deleteNode(int);
+    void polynomialAddtion(int);
+    void combineExponent();
     NodeLinkedList *headPolynomial[InitNumber],*resultHeadPolynomial;
     int numberOfPolynomials;
 };
@@ -33,12 +33,13 @@ Polynomial::Polynomial() {}
 Polynomial::Polynomial(int n) {
     numberOfPolynomials = n;
     resultHeadPolynomial = (NodeLinkedList *)malloc(sizeof(NodeLinkedList));
-    resultHeadPolynomial->next = NULL;
+    resultHeadPolynomial->next = nullptr;
     for(int i = 0; i < n; i++){
         headPolynomial[i] = (NodeLinkedList *)malloc(sizeof(NodeLinkedList));
-        headPolynomial[i]->next = NULL;
+        headPolynomial[i]->next = nullptr;
     }
 }
+
 //the module of inputing
 void Polynomial::inputNumber(){
     int Number;
@@ -49,12 +50,12 @@ void Polynomial::inputNumber(){
         Coefficient[i] = (double *) malloc(InitialValue * sizeof(double));
     }
     for(int i = 0; i < numberOfPolynomials; i++) {
-        cout<<"input the number of terms of this polynomial";
+        cout<<"input the number of terms of this polynomial:";
         cin >> Number;
         for (int j = 0; j < Number; j++) {
-            cout<<"input the no."<<j+1<<" coefficient";
+            cout<<"input the no."<<j+1<<" coefficient:";
             cin >> Coefficient[i][j];
-            cout<<"input the no."<<j+1<<" exponent";
+            cout<<"input the no."<<j+1<<" exponent:";
             cin >> Exponent[i][j];
         }
         this->sortArray(Exponent[i], Coefficient[i], Number);
@@ -64,6 +65,7 @@ void Polynomial::inputNumber(){
 
 //creat the linked list to storage the polynomial
 void Polynomial::CreatePolynomial(const int exponent[], const double coefficient[], int number, int n) {
+    
     for(int i = number - 1; i >= 0; i--){
         NodeLinkedList *NewNode;
         NewNode = (NodeLinkedList*)malloc(sizeof(NodeLinkedList));
@@ -73,10 +75,17 @@ void Polynomial::CreatePolynomial(const int exponent[], const double coefficient
         headPolynomial[n]->next = NewNode;
     }
 }
+
+void Polynomial::add(){
+    for(int i = 0; i < numberOfPolynomials; i++){
+        this->polynomialAddtion(i);
+    }
+    this->combineExponent();
+}
 //basic operation about deleting node 
 void Polynomial::deleteNode(int n) {
     NodeLinkedList *p,*q;
-    p = headPolynomial[0]->next;
+    p = resultHeadPolynomial->next;
     int j = 1;
     while(p && j < n - 1){
         p = p->next;
@@ -87,11 +96,11 @@ void Polynomial::deleteNode(int n) {
 }
 
 // part one of polynomial add: merge linked list
-void Polynomial::polynomialAddtion() {
+void Polynomial::polynomialAddtion(int n) {
     NodeLinkedList *Node1,*Node2,*Node3;
-    Node1 = headPolynomial[0]->next;
-    Node2 = headPolynomial[1]->next;
     Node3 = resultHeadPolynomial;
+    Node1 = resultHeadPolynomial->next;
+    Node2 = headPolynomial[n]->next; 
     while(Node1 && Node2){
         if(Node1->exponent >= Node2->exponent){
             Node3->next = Node1;
@@ -104,7 +113,8 @@ void Polynomial::polynomialAddtion() {
             Node2 = Node2->next;
         }
     }
-    Node3->next = Node1 ? Node1:Node2;
+    Node3->next = Node1 ? Node1:Node2; 
+    free(headPolynomial[n]);
 }
 // part two of polynomial add: combine the same exponent
 void Polynomial::combineExponent(){
@@ -124,7 +134,7 @@ void Polynomial::combineExponent(){
 }
 // output the result to a txt
 void Polynomial::OutputToFile() {
-    fstream out("result.txt",ios::out|ios::in);
+    fstream out("result",ios::out|ios::in);
     NodeLinkedList *p;
     p = resultHeadPolynomial->next;
     while(p)
@@ -145,7 +155,7 @@ void Polynomial::Output() {
     while(p)
     {
         if(!p->next){
-            cout<<p->coefficient<<"X^"<<p->exponent;
+            cout << p->coefficient << "X^" << p->exponent;
         }
         else{
             cout << p->coefficient << "X^" << p->exponent << "+";
@@ -171,11 +181,12 @@ void Polynomial::sortArray(int *a,double *b,int n){
 }
 
 int main() {
-    int n = 2;
+    int n;
+    cout<<"output the number of polynomial(n<10):";
+    cin>>n;
     Polynomial Polynomial(n);
     Polynomial.inputNumber();
-    Polynomial.polynomialAddtion();
-    Polynomial.combineExponent();
+    Polynomial.add();
     Polynomial.Output();
     Polynomial.OutputToFile();
     return 0;
