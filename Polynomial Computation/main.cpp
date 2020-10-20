@@ -15,7 +15,6 @@ public:
     Polynomial();
     Polynomial(int);
     void inputNumber();
-    void sortArray(int *, double *, int );
     void sortPolynomial(int);
     void CreatePolynomial(const int *, const double *, int ,int );
     void add();
@@ -62,8 +61,8 @@ void Polynomial::inputNumber(){
             cout<<"input the no."<<j+1<<" exponent:";
             cin >> Exponent[i][j];
         }
-        this->sortArray(Exponent[i], Coefficient[i], Number);
         this->CreatePolynomial(Exponent[i], Coefficient[i], Number, i);
+        this->sortPolynomial(i);
     }
 }
 
@@ -167,28 +166,12 @@ void Polynomial::Output() {
     }
     cout<<endl;
 }
-//sort coefficient and exponent before storaging them in linked list
-void Polynomial::sortArray(int *a,double *b,int n){
-    for(int i = 0; i < n - 1; i++){
-        for(int j = 0;j < n- i - 1; j++){
-            if(*(a+j)<*(a+j+1)){
-                int temp1 = *(a+j);
-                *(a+j) = *(a+j+1);
-                *(a+j+1) = temp1;
-                double temp2 = *(b+j);
-                *(b+j) = *(b+j+1);
-                *(b+j+1) = temp2;
-            }
-        }
-    }
-}
-
+//sort polynomial
 void Polynomial::sortPolynomial(int n){
     NodeLinkedList *node1,*node2;
     int k,e;
     double c;
-    
-    if( n = 10){
+    if( n == 10){
         node1 = resultHeadPolynomial;
     }
     else{
@@ -196,21 +179,21 @@ void Polynomial::sortPolynomial(int n){
     }
     k = getLength(n);
     for(int i = 0 ; i < k - 1 ; i++){
-        node2 = node1;
+        node2 = node1->next;
         for(int j = 0 ; j < k - i - 1 ; j++){
-            if(node2->next->exponent < node2->next->next->exponent){
-                e = node2->next->exponent;
-                c = node2->next->coefficient;
-                node2->next->exponent = node2->next->next->exponent;
-                node2->next->coefficient = node2->next->next->coefficient;
-                node2->next->next->exponent = e;
-                node2->next->next->coefficient = c;
+            if(node2->exponent < node2->next->exponent){
+                e = node2->exponent;
+                c = node2->coefficient;
+                node2->exponent = node2->next->exponent;
+                node2->coefficient = node2->next->coefficient;
+                node2->next->exponent = e;
+                node2->next->coefficient = c;
             }
+            node2 = node2->next;
         }
-        node1 = node1->next;
     }
 }
-
+//product module
 void Polynomial::product(){
     NodeLinkedList *polynomialProduct;
     polynomialProduct = headPolynomial[1];
@@ -221,7 +204,7 @@ void Polynomial::product(){
     this->sortPolynomial(10);
     this->combineExponent();
 }
-
+//son moudule of product
 void Polynomial::product(int e, double c){
     NodeLinkedList *p,*q;
     p = headPolynomial[0];
@@ -236,25 +219,9 @@ void Polynomial::product(int e, double c){
         q->next = newNode;
         q = q->next;
     }
-    NodeLinkedList *Node1,*Node2,*Node3;
-    Node3 = resultHeadPolynomial;
-    Node1 = resultHeadPolynomial->next;
-    Node2 = headPolynomial[9]->next; 
-    while(Node1 && Node2){
-        if(Node1->exponent >= Node2->exponent){
-            Node3->next = Node1;
-            Node3 = Node1;
-            Node1 = Node1->next;
-        }
-        else{
-            Node3->next = Node2;
-            Node3 = Node2;
-            Node2 = Node2->next;
-        }
-    }
-    Node3->next = Node1 ? Node1:Node2; 
+    this->polynomialAddtion(9);
 }
-
+//basic operition of getting polynomial length
 int Polynomial::getLength(int n){
     NodeLinkedList *node;
     int k = 0;
@@ -275,21 +242,17 @@ int main() {
     int n;
     cout<<"choose way: 1.add  2.product";
     cin>>n;
+    Polynomial Polynomial(2);
+    Polynomial.inputNumber();
     if(n == 1){
-        cout<<"output the number of polynomial(n<10):";
-        cin>>n;
-        Polynomial Polynomial(n);
-        Polynomial.inputNumber();
+        // cout<<"output the number of polynomial(n<10):";
+        // cin>>n;
         Polynomial.add();
-        Polynomial.Output();
-        Polynomial.OutputToFile();
     }
     else{
-        Polynomial Polynomial(2);
-        Polynomial.inputNumber();
         Polynomial.product();
-        Polynomial.Output();
     }
-    
+    Polynomial.Output();
+    Polynomial.OutputToFile();
     return 0;
 }
