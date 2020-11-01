@@ -42,6 +42,34 @@ Polynomial::Polynomial(int n) {
         headPolynomial[i]->next = nullptr;
     }
 }
+//basic operation about deleting node 
+void Polynomial::deleteNode(int n) {
+    NodeLinkedList *p,*q;
+    p = resultHeadPolynomial->next;
+    int j = 1;
+    while(p && j < n - 1){
+        p = p->next;
+        j++;
+    }
+    q = p->next;
+    p->next = q->next;
+}
+//basic operition of getting polynomial length
+int Polynomial::getLength(int n){
+    NodeLinkedList *node;
+    int k = 0;
+    if(n == 10){
+        node = resultHeadPolynomial;
+    }
+    else{
+        node = headPolynomial[n];
+    }
+    while(node->next){
+        k++;
+        node = node->next;
+    }
+    return k;
+}
 
 //the module of inputing
 void Polynomial::inputNumber(){
@@ -78,24 +106,12 @@ void Polynomial::CreatePolynomial(const int exponent[], const double coefficient
         headPolynomial[n]->next = NewNode;
     }
 }
-
+//add
 void Polynomial::add(){
     for(int i = 0; i < numberOfPolynomials; i++){
         this->polynomialAddtion(i);
     }
     this->combineExponent();
-}
-//basic operation about deleting node 
-void Polynomial::deleteNode(int n) {
-    NodeLinkedList *p,*q;
-    p = resultHeadPolynomial->next;
-    int j = 1;
-    while(p && j < n - 1){
-        p = p->next;
-        j++;
-    }
-    q = p->next;
-    p->next = q->next;
 }
 
 // part one of polynomial add: merge linked list
@@ -221,38 +237,30 @@ void Polynomial::product(int e, double c){
     }
     this->polynomialAddtion(9);
 }
-//basic operition of getting polynomial length
-int Polynomial::getLength(int n){
-    NodeLinkedList *node;
-    int k = 0;
-    if(n == 10){
-        node = resultHeadPolynomial;
-    }
-    else{
-        node = headPolynomial[n];
-    }
-    while(node->next){
-        k++;
-        node = node->next;
-    }
-    return k;
-}
 
 int main() {
     int n;
-    cout<<"choose way: 1.add  2.product";
-    cin>>n;
-    Polynomial Polynomial(2);
-    Polynomial.inputNumber();
-    if(n == 1){
-        // cout<<"output the number of polynomial(n<10):";
-        // cin>>n;
-        Polynomial.add();
+    while(true){
+        cout<<"choose way: 1.add  2.product";
+        cin>>n;
+        Polynomial Polynomial(2);
+        Polynomial.inputNumber();
+        if(n == 1){
+            // cout<<"output the number of polynomial(n<10):";
+            // cin>>n;
+            Polynomial.add();
+        }
+        else{
+            Polynomial.product();
+        }
+        Polynomial.Output();
+        Polynomial.OutputToFile();
+        char c;
+        cout<<"continue?(input 'n' to exit)";
+        cin>>c;
+        if( c == 'n'){
+            break;
+        }
     }
-    else{
-        Polynomial.product();
-    }
-    Polynomial.Output();
-    Polynomial.OutputToFile();
     return 0;
 }
